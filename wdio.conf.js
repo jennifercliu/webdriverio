@@ -6,6 +6,8 @@ if(process.env.SERVER === 'prod') {
     baseUrl = "http://www.webdriveruniversity.com";
 }
 
+var timeout = process.env.DEBUG ? 99999999 : 10000
+
 exports.config = {
     
     //
@@ -137,7 +139,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timout:99999
+        timeout: timeout
     },
     //
     // =====
