@@ -1,4 +1,23 @@
 var request = require('sync-request');
+browser.addCommand("submitDataViaContactUsForm", function (firstName, lastName, emailAddress, comments){
+	
+	if (firstName) {
+		browser.setValue("[name='first_name']", firstName);
+	}
+	if (lastName) {
+		browser.setValue("[name='last_name']", lastName);
+	}
+	if (emailAddress) {
+		browser.setValue("[name='email']", emailAddress);
+	}
+	if (comments) {
+		browser.setValue("[name='message']", comments);
+	}
+
+	browser.click("[type='submit']");
+
+
+});
 
 beforeEach(function(){
 	browser.url('/Contact-Us/contactus.html');
@@ -15,19 +34,19 @@ describe('Test contact us from webdriveruni', function(){
 
 contactUsDetails.forEach(function(contactDetails) {
 
-	it('Should be able to submit a successful submission', function(){
-		browser.setValue("[name='first_name']",'Jen');
-		browser.setValue("[name='last_name']",'Noodle');
-		browser.setValue("[name='email']", contactDetails.email);
-		browser.setValue("[name='message']",contactDetails.body);
-		browser.click("[type='submit']");
+	it.only('Should be able to submit a successful submission', function(){
+		browser.submitDataViaContactUsForm('Joe', 'Test', contactDetails.email, contactDetails.body );
+
+
+//		browser.setValue("[name='email']", contactDetails.email);
+//		browser.setValue("[name='message']",contactDetails.body);
+//		browser.click("[type='submit']");
 		
 		var successfulContactConfirmation = browser.isExisting("h1");
 		expect(successfulContactConfirmation, 'Successful submission message does not exist').to.be.true;
 
 		var successfulSubmission = browser.getText("h1");
 		expect(successfulSubmission).to.equal('Thank You for your Message!');
-		console.log(successfulSubmission);
 		});
 
 });
