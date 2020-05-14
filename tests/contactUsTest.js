@@ -1,5 +1,6 @@
 var request = require('sync-request');
-browser.addCommand("submitDataViaContactUsForm", function (firstName, lastName, emailAddress, comments){
+
+//browser.addCommand("submitDataViaContactUsForm", function (firstName, lastName, emailAddress, comments){
 	
 	beforeEach(function(){
 		browser.url('/Contact-Us/contactus.html');
@@ -38,63 +39,70 @@ browser.addCommand("submitDataViaContactUsForm", function (firstName, lastName, 
 		};
 
 		function confirmSuccessfulSubmission() {
-			var validateSubmittionHeader = browser.waitUntil(function(){
-				return browser.getText(successfulSubmissionSelector) == "Thank you for your Message!";
-			}, 3000);
+			var validateSubmissionHeader = browser.waitUntil(function(){
+				return browser.getText(successfulSubmissionSelector) == "Thank You for your Message!";
+			}, 3000) 
+			expect(validateSubmissionHeader, 'Successful submission message does not exist!').to.be.true;
+		};
 
-			expect(validateSubmittionHeader, 'Successful submittion message does not exist!').to.be.true;
+		function confirmUnsuccessfulSubmission() {
+			var validateSubmissionHeader = browser.waitUntil(function(){
+				return browser.getText(unsuccessfulSubmissionSelector) == "Error: all fields are required"
+			}, 3000)
+			expect(browser.getText(unsuccessfulSubmissionSelector)).to.include('Error: all fields are required');
 		};
 
 
+		contactUsDetails.forEach(function(contactDetail) {
 
-		contactUsDetails.forEach(function(contactDetails) {
+			it('Should be able to submit a successful submission', function(){
+				setFirstName('Joe');
+				setLastName('Last');
+				setEmailAddress(contactDetail.email);
+				setComments(contactDetail.body);
+				clickSubmitButton();
+				confirmSuccessfulSubmission();
+				});
+			});
 
-			it.only('Should be able to submit a successful submission', function(){
-				browser.submitDataViaContactUsForm('Joe', 'Test', contactDetails.email, contactDetails.body );
+//				browser.submitDataViaContactUsForm('Joe', 'Test', contactDetails.email, contactDetails.body );
 
-				var successfulContactConfirmation = browser.isExisting("h1");
-				expect(successfulContactConfirmation, 'Successful submission message does not exist').to.be.true;
+//	check if successful submission
+//				var successfulContactConfirmation = browser.isExisting("h1");
+//				expect(successfulContactConfirmation, 'Successful submission message does not exist').to.be.true;
 
-				var successfulSubmission = browser.getText("h1");
-				expect(successfulSubmission).to.equal('Thank You for your Message!');
+// check for successful message
+//				var successfulSubmission = browser.getText("h1");
+//				expect(successfulSubmission).to.equal('Thank You for your Message!');
+
+
+		it('Should not be able to submit a succesful submission missing comments', function(){
+			setFirstName('Jen');
+			setLastName('Noodle');
+			setEmailAddress('test@mail.com');
+			clickSubmitButton();
+			confirmUnsuccessfulSubmission();
+			});
+
+//			var unsuccessfulContactConfirmation = browser.isExisting("body");
+//			expect(unsuccessfulContactConfirmation, 'unsuccessful submission message does not exist').to.be.true;
+		
+
+		it('Should not be able to submit a succesful submission missing last name', function(){
+			setFirstName('My first name');
+			setComments('My comments');
+			setEmailAddress('test@mail.com');
+			clickSubmitButton();
+			confirmUnsuccessfulSubmission();
+			});
+
+
+		it('Should not be able to submit a succesful submission missing firstname, comments', function(){
+			setLastName('My last name');
+			setEmailAddress('test@mail.com');
+			clickSubmitButton();
+			confirmUnsuccessfulSubmission();
 			});
 
 		});
-
-		it('Should not be able to submit a succesful submission missing email', function(){
-			browser.setValue("[name='first_name']",'Jen');
-			browser.setValue("[name='last_name']",'Noodle');
-			browser.setValue("[name='message']",'test');
-			browser.click("[type='submit']");
-
-			var unsuccessfulContactConfirmation = browser.isExisting("body");
-			expect(unsuccessfulContactConfirmation, 'unsuccessful submission message does not exist').to.be.true;
-		});
-
-		it('Should not be able to submit a succesful submission missing last name', function(){
-			browser.setValue("[name='first_name']",'Jen');
-			browser.setValue("[name='email']",'test@mail.com');
-			browser.setValue("[name='message']",'test');
-			browser.click("[type='submit']");
-
-			var successfulContactConfirmation = browser.isExisting("h1");
-			expect(successfulContactConfirmation, 'Successful submission message does not exist').to.be.false;
-		});
-
-		it('Should not be able to submit a succesful submission missing message and email', function(){
-			browser.setValue("[name='first_name']",'Jen');
-			browser.setValue("[name='last_name']",'Noodle');
-			browser.click("[type='submit']");
-
-			var unsuccessfulContactConfirmation = browser.isExisting("body");
-			expect(unsuccessfulContactConfirmation, 'Unsuccessful submission message does not exist').to.be.true;
-
-			var errorText = browser.getText('body');
-			expect(errorText).to.include('Error: all fields are required');
-			console.log(errorText);
-
-			var errorText = browser.isVisible('body');
-			expect(errorText, 'Error message is not visible').to.be.true;
-
-		});
-	})
+	
