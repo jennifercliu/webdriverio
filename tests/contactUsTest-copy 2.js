@@ -1,11 +1,22 @@
-var contactUs_Page = require("./pageObjects/ContactUs_Page.js");
+var request = require('sync-request');
 
-beforeEach(function(){
+//browser.addCommand("submitDataViaContactUsForm", function (firstName, lastName, emailAddress, comments){
+	
+	beforeEach(function(){
 		browser.url('/Contact-Us/contactus.html');
 	})
 
 	describe('Test contact us from webdriveruni', function(){
+		var res = request('GET', 'http://jsonplaceholder.typicode.com/posts/1/comments');
+		var contactUsDetails = JSON.parse(res.getBody().toString('utf8'));
 
+		var firstNameSelector = "[name='first_name']";
+		var lastNameSelector = "[name='last_name']";
+		var emailAddressSelector = "[name='email']";
+		var commentsSelector = "[name='message']";
+		var successfulSubmissionSelector = "h1";
+		var unsuccessfulSubmissionSelector = "body";
+		var submitButtonSelector = "[type='submit']"
 
 		function setFirstName(firstName) {
 			return browser.setValue(firstNameSelector, firstName);
