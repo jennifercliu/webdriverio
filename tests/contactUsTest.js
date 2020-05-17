@@ -7,36 +7,31 @@ beforeEach(function(){
 describe('Test contact us from webdriveruni', function(){
 
 	it('Should be able to submit a successful submission', function(){
-		setFirstName('Joe');
-		setLastName('Last');
-		setEmailAddress('email@email.com');
-		setComments('message?????');
-		clickSubmitButton();
-		confirmSuccessfulSubmission();
+		ContactUs_Page.submitAllInformationViaContactUsForm('Joe', 'Last', 'email@mail.com', 'message????');
 	});
 
 	it('Should not be able to submit a succesful submission missing comments', function(){
-		setFirstName('Jen');
-		setLastName('Noodle');
-		setEmailAddress('test@mail.com');
-		clickSubmitButton();
-		confirmUnsuccessfulSubmission();
+		ContactUs_Page.setFirstName('Jen');
+		ContactUs_Page.setLastName('Noodle');
+		ContactUs_Page.setEmailAddress('test@mail.com');
+		ContactUs_Page.clickSubmitButton();
+		ContactUs_Page.confirmUnsuccessfulSubmission();
 	});	
 
 	it('Should not be able to submit a succesful submission missing last name', function(){
-		setFirstName('My first name');
-		setComments('My comments');
-		setEmailAddress('test@mail.com');
-		clickSubmitButton();
-		confirmUnsuccessfulSubmission();
+		ContactUs_Page.setFirstName('My first name');
+		ContactUs_Page.setComments('My comments');
+		ContactUs_Page.setEmailAddress('test@mail.com');
+		ContactUs_Page.clickSubmitButton();
+		ContactUs_Page.confirmUnsuccessfulSubmission();
 	});
 
 
 	it('Should not be able to submit a succesful submission missing firstname, comments', function(){
-		setLastName('My last name');
-		setEmailAddress('test@mail.com');
-		clickSubmitButton();
-		confirmUnsuccessfulSubmission();
+		ContactUs_Page.setLastName('My last name');
+		ContactUs_Page.setEmailAddress('test@mail.com');
+		ContactUs_Page.clickSubmitButton();
+		ContactUs_Page.confirmUnsuccessfulSubmission();
 	});
 
 });
