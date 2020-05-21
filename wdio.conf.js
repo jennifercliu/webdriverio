@@ -1,15 +1,15 @@
 var baseUrl;
 
 if(process.env.SERVER === 'prod') {
-    baseUrl = 'https://www.google.com';
+	baseUrl = 'https://www.google.com';
 } else {
-    baseUrl = "http://www.webdriveruniversity.com";
+	baseUrl = "http://www.webdriveruniversity.com";
 }
 
 var timeout = process.env.DEBUG ? 99999999 : 10000
 
 exports.config = {
-    
+
     //
     // ==================
     // Specify Test Files
@@ -26,7 +26,7 @@ exports.config = {
     exclude: [
 
     './pageObjects/*_Page.js'
-        ],
+    ],
     //
     // ============
     // Capabilities
@@ -134,9 +134,10 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/reporters/dot.html
-    reporters: ['dot', 'junit', 'json', 'allure'],
+    reporters: ['dot', 'allure'],
 
     reporterOptions: {
+        /**
         junit: {
             outputDir: './reports/junit-results/'
         },
@@ -145,6 +146,7 @@ exports.config = {
             outputDir: './reports/json-results/'
         },
 
+        **/
         allure: {
         	outputDir: './reports/allure-results/',
         	disableWebdriverStepsReporting: true,
@@ -157,8 +159,8 @@ exports.config = {
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
-        ui: 'bdd',
-        timeout: timeout
+    	ui: 'bdd',
+    	timeout: timeout
     },
     //
     // =====
@@ -183,8 +185,8 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
      beforeSession: function (config, capabilities, specs) {
-        const del = require('del');
-        del(['allure-report', 'errorShots', 'reports']);
+     	const del = require('del');
+     	del(['allure-report', 'errorShots', 'reports']);
      },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
@@ -193,9 +195,9 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
      before: function (capabilities, specs) {
-        expect = require('chai').expect;
-        should = require('chai').should();
-    },
+     	expect = require('chai').expect;
+     	should = require('chai').should();
+     },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name
@@ -257,10 +259,14 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    after: function (result, capabilities, specs) {
-    	var name = 'ERROR-chrome-' + Date.now();
-    	browser.saveScreenshot('./errorShots/' +  name + '.png');
+
+     /**
+     after: function (result, capabilities, specs) {
+     	var name = 'ERROR-chrome-' + Date.now();
+     	browser.saveScreenshot('./errorShots/' +  name + '.png');
      },
+     **/
+     
     /**
      * Gets executed right after terminating the webdriver session.
      * @param {Object} config wdio configuration object
