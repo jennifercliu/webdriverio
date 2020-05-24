@@ -5,6 +5,14 @@ class ContactUs_Page {
 	get comments() { return $("[name='message']"); }
 	get emailAddress() { return $("[name='email']"); }
 	get submitButton() { return $("[type='submit']"); }
+	get successfulSubmissionHeader() { return $("h1"); }
+	get unsuccessfulSubmissionHeader() { return $("body"); }
+	get successfulSubmissionHeaderText() {
+		return this.successfulSubmissionHeader.getText(); //Thank You for your Message!
+	}
+	get unsuccessfulSubmissionHeaderText() {
+		return this.unsuccessfulSubmissionHeader.getText(); //Error: all fields are required Error: Invalid email
+	}
 
 	setFirstName(firstName) {
 		return this.firstName.setValue(firstName);
@@ -43,23 +51,6 @@ class ContactUs_Page {
 		this.confirmSuccessfulSubmission();
 
 	};
-
-	confirmSuccessfulSubmission() {
-		var successfulSubmissionHeader = "h1";
-		var validateSubmissionHeader = browser.waitUntil(function(){
-			return browser.getText(successfulSubmissionHeader) == "Thank You for your Message!";
-		}, 3000) 
-		expect(validateSubmissionHeader, 'Successful submission message does not exist!').to.be.true;
-	};
-
-	confirmUnsuccessfulSubmission() {
-		var unsuccessfulSubmissionHeader = "body";
-		var validateSubmissionHeader = browser.waitUntil(function(){
-			return browser.getText(unsuccessfulSubmissionHeader) == "Error: all fields are required"
-		}, 3000)
-		expect(browser.getText(unsuccessfulSubmissionHeader)).to.include('Error: all fields are required');
-	};
-
 };
 
 module.exports = new ContactUs_Page();
