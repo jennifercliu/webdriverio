@@ -7,6 +7,7 @@ class ContactUs_Page {
 	get submitButton() { return $("[type='submit']"); }
 	get successfulSubmissionHeader() { return $("h1"); }
 	get unsuccessfulSubmissionHeader() { return $("body"); }
+
 	get successfulSubmissionHeaderText() {
 		return this.successfulSubmissionHeader.getText(); //Thank You for your Message!
 	}
@@ -36,20 +37,18 @@ class ContactUs_Page {
 
 	submitAllInformationViaContactUsForm(firstName, lastName, emailAddress, comments) {
 		if(firstName) {
-			return this.firstName.setValue(firstName);
+			this.firstName.setValue(firstName);
 		}
 		if(lastName) {
-			return this.lastName.setValue(lastName);
+		 	this.lastName.setValue(lastName);
 		}
 		if(emailAddress) {
-			return this.emailAddress.setValue(emailAddress);
+			this.emailAddress.setValue(emailAddress);
 		}
 		if(comments) {
-			return this.comments.setValue(comments);
+			this.comments.setValue(comments);
 		}
 		this.submitButton.click();
-		this.confirmSuccessfulSubmission();
-
 	};
 };
 
